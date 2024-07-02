@@ -1,10 +1,23 @@
 import React, { useRef } from "react";
 import "./LoginPage.css";
 const LoginPage = () => {
-  const passwordRef = useRef(null);
+  const nameRef = useRef(null);
+  const phoneRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      name: "",
+      phone: 0,
+    };
+
+    user.name = nameRef.current.value;
+    user.phone = parseInt(phoneRef.current.value);
+    console.log(user);
+  };
   return (
     <section className="align_center form_page">
-      <form className="authentication_form">
+      <form className="authentication_form" onSubmit={handleSubmit}>
         <h2>Login Form</h2>
         <div className="form_inputs">
           <div>
@@ -12,6 +25,7 @@ const LoginPage = () => {
             <input
               type="text"
               id="name"
+              ref={nameRef}
               className="form_text_input"
               placeholder="Enter Your Name"
             />
@@ -19,24 +33,12 @@ const LoginPage = () => {
           <div>
             <label htmlFor="phone">Phone Number</label>
             <input
-              type="password"
-              ref={passwordRef}
+              type="number"
               id="phone"
+              ref={phoneRef}
               className="form_text_input"
               placeholder="Enter Your Phone Number"
             />
-            <button
-              type="button"
-              onClick={() => (passwordRef.current.type = "password")}
-            >
-              Hide Password
-            </button>
-            <button
-              type="button"
-              onClick={() => (passwordRef.current.type = "text")}
-            >
-              Show Password
-            </button>
           </div>
           <button type="submit" className="search_button form_submit">
             Submit
