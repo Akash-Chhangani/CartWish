@@ -2,6 +2,8 @@ import React from "react";
 import "./CartPage.css";
 import user from "../../assets/user.webp";
 import Table from "../Table/Table";
+import QuantityInput from "../SingleProduct/QuantityInput";
+import remove from "../../assets/remove.png";
 
 const CartPage = () => {
   return (
@@ -19,9 +21,13 @@ const CartPage = () => {
           <tr>
             <td>iPhone</td>
             <td>$999</td>
-            <td>1</td>
+            <td className="align_center table_quantity_input">
+              <QuantityInput />
+            </td>
             <td>$999</td>
-            <td>Remove</td>
+            <td>
+              <img src={remove} alt="removeIcon" className="cart_remove_icon" />
+            </td>
           </tr>
         </tbody>
       </Table>
