@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./LoginPage.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const schema = z.object({
   email: z
@@ -16,6 +17,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
+
   const onSubmit = (formData) => console.log(formData);
 
   return (
@@ -57,6 +59,4 @@ const LoginPage = () => {
     </section>
   );
 };
-import "./LoginPage.css";
-import { useForm } from "react-hook-form";
 export default LoginPage;
