@@ -2,7 +2,11 @@ import React, { useRef, useState } from "react";
 import "./LoginPage.css";
 
 const LoginPage = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const onSubmit = (formData) => console.log(formData);
 
   return (
@@ -17,8 +21,14 @@ const LoginPage = () => {
               id="name"
               className="form_text_input"
               placeholder="Enter Your Name"
-              {...register("name")}
+              {...register("name", { required: true, minLength: 3 })}
             />
+            {errors.name?.type === "required" && (
+              <em className="form_error">Please enter your name</em>
+            )}
+            {errors.name?.type === "minLength" && (
+              <em className="form_error">Please enter at least 3 character</em>
+            )}
           </div>
           <div>
             <label htmlFor="phone">Phone Number</label>
