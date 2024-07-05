@@ -34,9 +34,16 @@ const SignupPage = () => {
   } = useForm({ resolver: zodResolver(schema) });
 
   const [profile, setProfile] = useState(null);
+  const [formError, setFormError] = useState("");
 
   const onSubmit = async (formData) => {
-    await signup(formData, profile);
+    try {
+      await signup(formData, profile);
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        setFormError(err.response.data.message);
+      }
+    }
   };
 
   return (
@@ -138,7 +145,7 @@ const SignupPage = () => {
             )}
           </div>
         </div>
-
+        {formError && <em className="form_error">{formError}</em>}
         <button className="search_button form_submit" type="submit">
           Submit
         </button>
