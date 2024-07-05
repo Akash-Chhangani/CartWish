@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { login } from "../../Services/userServices";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   email: z
@@ -15,6 +16,8 @@ const schema = z.object({
 const LoginPage = () => {
   const [formError, setFormError] = useState("");
 
+  let navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -23,7 +26,9 @@ const LoginPage = () => {
 
   const onSubmit = async (formData) => {
     try {
-      await login(formData);
+      const { data } = await login(formData);
+      localStorage.setItem("token", data.token);
+      navigate("/");
     } catch (err) {
       if (err.response && err.response.status === 400) {
         setFormError(err.response.data.message);
