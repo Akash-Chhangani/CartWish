@@ -3,6 +3,7 @@ import "./LoginPage.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { login } from "../../Services/userServices";
 
 const schema = z.object({
   email: z
@@ -12,13 +13,23 @@ const schema = z.object({
   password: z.string().min(8, { message: "Please enter at least 8 digit " }),
 });
 const LoginPage = () => {
+  const [formError, setFormError] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
 
-  const onSubmit = (formData) => console.log(formData);
+  const onSubmit = async (formData) => {
+    try {
+      await login(formData);
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        setFormError(err.response.data.message);
+      }
+    }
+  };
 
   return (
     <section className="align_center form_page">
@@ -51,6 +62,7 @@ const LoginPage = () => {
               <em className="form_error">{errors.password.message}</em>
             )}
           </div>
+          {formError && <em className="form_error">{formError}</em>}
           <button type="submit" className="search_button form_submit">
             Submit
           </button>
