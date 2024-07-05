@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { signup } from "../../Services/userServices";
 
 const schema = z
   .object({
@@ -33,8 +34,10 @@ const SignupPage = () => {
   } = useForm({ resolver: zodResolver(schema) });
 
   const [profile, setProfile] = useState(null);
-  const onSubmit = (formData) => console.log(formData);
-  console.log(profile);
+
+  const onSubmit = async (formData) => {
+    await signup(formData, profile);
+  };
 
   return (
     <section className="align_center form_page">
