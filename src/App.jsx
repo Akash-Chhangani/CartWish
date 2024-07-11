@@ -5,7 +5,7 @@ import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { getJwt } from "./Services/userServices";
-import { addToCartAPI } from "./Services/cartServices";
+import { addToCartAPI, getCartAPI } from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -48,12 +48,29 @@ const App = () => {
         setCart(cart);
       });
   };
+
+  const getCart = () => {
+    getCartAPI()
+      .then((res) => {
+        setCart(res.data);
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong!");
+      });
+  };
+
+  useEffect(() => {
+    if (user) {
+      getCart();
+    }
+  }, [user]);
+
   return (
     <div className="app">
       <Navbar user={user} cartCount={cart.length} />
       <main>
         <ToastContainer position="bottom-right" />
-        <Routing addToCart={addToCart} />
+        <Routing addToCart={addToCart} cart={cart} />
       </main>
     </div>
   );
