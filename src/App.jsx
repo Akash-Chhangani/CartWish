@@ -9,6 +9,7 @@ import { addToCartAPI, getCartAPI } from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "./contexts/UserContext";
+import CartContext from "./contexts/CartContext";
 
 setAuthToken(getJwt());
 const App = () => {
@@ -68,13 +69,15 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <div className="app">
-        <Navbar cartCount={cart.length} />
-        <main>
-          <ToastContainer position="bottom-right" />
-          <Routing addToCart={addToCart} cart={cart} />
-        </main>
-      </div>
+      <CartContext.Provider value={{ cart, addToCart }}>
+        <div className="app">
+          <Navbar />
+          <main>
+            <ToastContainer position="bottom-right" />
+            <Routing />
+          </main>
+        </div>
+      </CartContext.Provider>
     </UserContext.Provider>
   );
 };
