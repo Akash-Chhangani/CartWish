@@ -5,7 +5,11 @@ import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { getJwt } from "./Services/userServices";
-import { addToCartAPI, getCartAPI } from "./Services/cartServices";
+import {
+  addToCartAPI,
+  getCartAPI,
+  removeFromCartAPI,
+} from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "./contexts/UserContext";
@@ -61,6 +65,20 @@ const App = () => {
       });
   };
 
+  const removeFromCart = (id) => {
+    const oldCart = [...cart];
+    const newCart = oldCart.filter((item) => item.product._id !== id);
+    setCart(newCart);
+    removeFromCartAPI(id)
+      .then((res) => {
+        toast.success("Product Removed Successfully");
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong!");
+        setCart(oldCart);
+      });
+  };
+
   useEffect(() => {
     if (user) {
       getCart();
@@ -69,7 +87,7 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <CartContext.Provider value={{ cart, addToCart }}>
+      <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
         <div className="app">
           <Navbar />
           <main>
