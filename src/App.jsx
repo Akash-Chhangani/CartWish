@@ -123,7 +123,7 @@ const App = () => {
   return (
     <UserContext.Provider value={user}>
       <CartContext.Provider
-        value={{ cart, addToCart, removeFromCart, updatedCart }}
+        value={{ cart, addToCart, removeFromCart, updatedCart, setCart }}
       >
         <div className="app">
           <Navbar />
