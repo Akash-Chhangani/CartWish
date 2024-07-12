@@ -7,7 +7,9 @@ import setAuthToken from "./utils/setAuthToken";
 import { getJwt } from "./Services/userServices";
 import {
   addToCartAPI,
+  decreaseProductAPI,
   getCartAPI,
+  increaseProductAPI,
   removeFromCartAPI,
 } from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
@@ -79,6 +81,39 @@ const App = () => {
       });
   };
 
+  const updatedCart = (type, id) => {
+    const oldCart = [...cart];
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex(
+      (item) => item.product._id === id
+    );
+
+    if (type === "increase") {
+      updatedCart[productIndex].quantity += 1;
+      setCart(updatedCart);
+      increaseProductAPI(id)
+        .then((res) => {
+          toast.success(" Quantity Updated! ");
+        })
+        .catch((err) => {
+          toast.error("Something went wrong in quantity");
+          setCart(oldCart);
+        });
+    }
+    if (type === "decrease") {
+      updatedCart[productIndex].quantity -= 1;
+      setCart(updatedCart);
+      decreaseProductAPI(id)
+        .then((res) => {
+          toast.success(" Quantity Updated! ");
+        })
+        .catch((err) => {
+          toast.error("Something went wrong in quantity");
+          setCart(oldCart);
+        });
+    }
+  };
+
   useEffect(() => {
     if (user) {
       getCart();
@@ -87,7 +122,9 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+      <CartContext.Provider
+        value={{ cart, addToCart, removeFromCart, updatedCart }}
+      >
         <div className="app">
           <Navbar />
           <main>
