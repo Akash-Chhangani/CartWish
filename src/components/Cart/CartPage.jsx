@@ -1,12 +1,14 @@
 import "./CartPage.css";
-import user from "../../assets/user.webp";
 import Table from "../Table/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
 import remove from "../../assets/remove.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../../contexts/UserContext";
 
 const CartPage = ({ cart }) => {
   const [subTotal, setSubTotal] = useState(0);
+  const user = useContext(UserContext);
+  console.log(user);
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
@@ -17,10 +19,13 @@ const CartPage = ({ cart }) => {
   return (
     <section className="align_center cart_page">
       <div className="align_center user_info">
-        <img src={user} alt="user profile" />
+        <img
+          src={`http://localhost:5000/profile/${user?.profilePic}`}
+          alt="user profile"
+        />
         <div>
-          <p className="user_name">Akash</p>
-          <p className="user_email">akashchhangani@gmail.com</p>
+          <p className="user_name">Name : {user?.name}</p>
+          <p className="user_email">Email : {user?.email}</p>
         </div>
       </div>
 
