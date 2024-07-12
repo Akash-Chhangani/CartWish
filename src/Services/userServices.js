@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import apiClient from "../utils/api-client";
 
 export function signup(user, profile) {
@@ -14,6 +15,16 @@ export function signup(user, profile) {
 export function login(user) {
   return apiClient.post("/user/login", user);
 }
+
 export function getJwt() {
   return localStorage.getItem("token");
+}
+
+export function getUser() {
+  try {
+    const jwt = localStorage.getItem("token");
+    return jwtDecode(jwt);
+  } catch (error) {
+    return null;
+  }
 }

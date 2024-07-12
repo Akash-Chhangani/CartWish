@@ -1,15 +1,15 @@
 import React from "react";
 import "./MyOrderPage.css";
-import "./MyOrderPage.css";
 import Table from "./../Table/Table";
 import useData from "../../hooks/useData";
 import Loader from "../Table/Loader";
 
 const MyOrderPage = () => {
   const { data: orders, error, isLoading } = useData("/order");
+
   const getProductString = (order) => {
     const productStingArr = order.products.map(
-      (p) => `${p.product.title} (${p.quantity})`
+      (p) => `${p.product.title}(${p.quantity})`
     );
     return productStingArr.join(", ");
   };

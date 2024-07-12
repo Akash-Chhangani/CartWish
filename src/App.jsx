@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { getJwt } from "./Services/userServices";
+import { getJwt, getUser } from "./Services/userServices";
 import {
   addToCartAPI,
   decreaseProductAPI,
