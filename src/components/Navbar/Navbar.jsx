@@ -49,15 +49,19 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (search.trim() !== "") {
-      getSuggestionAPI(search)
-        .then((res) => {
-          setSuggestions(res.data);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      setSuggestions([]);
-    }
+    const delaySuggestions = setTimeout(() => {
+      if (search.trim() !== "") {
+        getSuggestionAPI(search)
+          .then((res) => {
+            setSuggestions(res.data);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(delaySuggestions);
   }, [search]);
 
   return (
