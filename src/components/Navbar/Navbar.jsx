@@ -13,7 +13,8 @@ import CartContext from "../../contexts/CartContext";
 import { getSuggestionAPI } from "../../Services/productServices";
 const Navbar = () => {
   const [search, setSearch] = useState("");
-  const [suggestion, setSuggestion] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(-1);
+  const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
   const user = useContext(UserContext);
   const { cart } = useContext(CartContext);
@@ -23,18 +24,39 @@ const Navbar = () => {
     if (search.trim() !== "") {
       navigate(`/products?search=${search.trim()}`);
     }
-    setSuggestion([]);
+    setSuggestions([]);
+  };
+
+  const handleKeyDown = (e) => {
+    if (selectedItem < suggestions.length) {
+      if (e.key === "ArrowDown") {
+        setSelectedItem((current) =>
+          current === suggestions.length - 1 ? 0 : current + 1
+        );
+      } else if (e.key === "ArrowUp") {
+        setSelectedItem((current) =>
+          current === suggestions.length - 1 ? 0 : current - 1
+        );
+      } else if (e.key === "Enter" && selectedItem > -1) {
+        const suggestion = suggestions[selectedItem];
+        navigate(`/products?search=${suggestion.title}`);
+        setSearch("");
+        setSuggestions([]);
+      }
+    } else {
+      setSelectedItem(-1);
+    }
   };
 
   useEffect(() => {
     if (search.trim() !== "") {
       getSuggestionAPI(search)
         .then((res) => {
-          setSuggestion(res.data);
+          setSuggestions(res.data);
         })
         .catch((err) => console.log(err));
     } else {
-      setSuggestion([]);
+      setSuggestions([]);
     }
   }, [search]);
 
@@ -49,22 +71,30 @@ const Navbar = () => {
             placeholder="Search Products"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <button type="submit" className="search_button">
             Search
           </button>
-          {suggestion.length > 0 && (
+          {suggestions.length > 0 && (
             <ul className="search_result">
-              {suggestion.map((suggestion) => (
-                <li className="search_suggestion_link" key={suggestion._id}>
+              {suggestions.map((suggestions, index) => (
+                <li
+                  className={
+                    selectedItem === index
+                      ? "search_suggestion_link active"
+                      : "search_suggestion_link"
+                  }
+                  key={suggestions._id}
+                >
                   <Link
-                    to={`/products?search=${suggestion.title}`}
+                    to={`/products?search=${suggestions.title}`}
                     onClick={() => {
                       setSearch("");
-                      setSuggestion([]);
+                      setSuggestions([]);
                     }}
                   >
-                    {suggestion.title}
+                    {suggestions.title}
                   </Link>
                 </li>
               ))}
