@@ -2,7 +2,7 @@ import "./CartPage.css";
 import Table from "../Table/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
 import remove from "../../assets/remove.png";
-import { useContext, useMemo } from "react";
+import { memo, useContext, useMemo } from "react";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
 import { checkOutAPI } from "./../../Services/orderServices";
@@ -99,4 +99,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default memo(CartPage);
