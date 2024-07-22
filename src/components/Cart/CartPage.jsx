@@ -2,7 +2,7 @@ import "./CartPage.css";
 import Table from "../Table/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
 import remove from "../../assets/remove.png";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
 import { checkOutAPI } from "./../../Services/orderServices";
@@ -10,17 +10,16 @@ import { toast } from "react-toastify";
 import config from "../../config.json";
 
 const CartPage = () => {
-  const [subTotal, setSubTotal] = useState(0);
   const user = useContext(UserContext);
   const { cart, removeFromCart, updatedCart, setCart } =
     useContext(CartContext);
 
-  useEffect(() => {
+  const subTotal = useMemo(() => {
     let total = 0;
     cart.forEach((item) => {
       total += item.product.price * item.quantity;
     });
-    setSubTotal(total);
+    return total;
   }, [cart]);
 
   const checkout = () => {
