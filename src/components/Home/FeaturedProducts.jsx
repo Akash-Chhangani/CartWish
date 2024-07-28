@@ -4,7 +4,12 @@ import ProductCard from "../Products/ProductCard";
 import useData from "./../../hooks/useData";
 import ProductCardSkeleton from "../Products/ProductCardSkeleton";
 const FeaturedProducts = () => {
-  const { data, error, isLoading } = useData("/products/featured");
+  const { data, error, isLoading } = useData(
+    "/products/featured",
+    null,
+    ["products", "featured"],
+    10 * 60 * 60 * 1000
+  );
   const skeletons = [1, 2, 3];
   return (
     <section className="featured_products">

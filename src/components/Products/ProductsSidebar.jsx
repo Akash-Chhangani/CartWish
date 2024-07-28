@@ -3,7 +3,12 @@ import LinkWithIcon from "./../Navbar/LinkWithIcon";
 import useData from "../../hooks/useData";
 import config from "../../config.json";
 const ProductsSidebar = () => {
-  const { data: categories, error } = useData("/category");
+  const { data: categories, error } = useData(
+    "/category",
+    null,
+    ["categories"],
+    24 * 60 * 60 * 1000
+  );
   return (
     <aside className="products_sidebar">
       <h2>Category</h2>
